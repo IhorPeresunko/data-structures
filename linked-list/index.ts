@@ -1,7 +1,8 @@
-
+type ForEachCallbackFunction<T> = (el: T, i: number, list: LinkedList<T>) => void;
+type ListNodeType<T> = ListNode<T> | null;
 export class LinkedList<T> {
-  private head: ListNode<T> | null = null;
-  private tail: ListNode<T> | null = null;
+  private head: ListNodeType<T> = null;
+  private tail: ListNodeType<T> = null;
   private length: number = 0;
 
   public isEmpty(): boolean {
@@ -146,8 +147,23 @@ export class LinkedList<T> {
 
     return arr;
   }
+
+  public forEach(cb: ForEachCallbackFunction<T>): void {
+    if (!this.head) {
+      return;
+    }
+
+    let current: ListNodeType<T> = this.head;
+    let i = 0;
+
+    while (current) {
+      cb(current.value, i++, this);
+
+      current = current.next;
+    }
+  }
 }
 
 class ListNode<T> {
-  constructor(public value: T, public next: ListNode<T> | null = null) {};
+  constructor(public value: T, public next: ListNodeType<T> = null) {};
 }
